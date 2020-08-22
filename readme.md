@@ -19,6 +19,8 @@ Flags
 |`--dirs`  | folder to download (backup) | `backup`
 |`--no-archive` | flag for canceling archiving after downloading | `False`
 |`-l` `--logs`| Path to save log file. | `None`
+|`--timeout`| timeout in seconds for all. Defaults to 10 seconds.|10
+|`--retry`| retry connection. Defaults to 3 attempts |3
 
 
 Example
