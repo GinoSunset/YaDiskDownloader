@@ -23,7 +23,7 @@ def download_folder(folder, path_to_save, timeout, retry):
             logging.info(f"    start download file {file_.path}")
             y.download(
                 file_.path,
-                f"{path_to_save}/{folder}/{file_.name}",
+                f"{path_to_save}/{file_.name}",
                 timeout=timeout,
                 n_retries=retry,
             )
@@ -102,6 +102,7 @@ if __name__ == "__main__":
             folder, f"{path_to_download}/{folder}", args.timeout, args.retry
         )
     if not args.no_archive:
-        archive_folder(f"{date}.tar.bz2", path_to_download)
+        path_to_archive = os.path.join(args.path_to_download, f"{date}.tar.bz2")
+        archive_folder(path_to_archive, path_to_download)
     logging.info("Success")
 
