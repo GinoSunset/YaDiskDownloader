@@ -1,1 +1,4 @@
 venv
+*log
+*tar.bz2
+.vscode
