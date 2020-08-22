@@ -9,18 +9,18 @@ import yadisk
 
 
 def download_folder(folder, path_to_save):
-    logging.error(f"start download folder {folder}")
+    logging.info(f"start download folder {folder}")
     if not (y.exists(folder)):
-        logging.error(f"Folder {folder} not exists")
+        logging.error(f"Folder {folder} not exists in Y.disk")
         return
     pathlib.Path(f"{date}/{folder}").mkdir(parents=True, exist_ok=True)
     for file_ in y.listdir(folder):
         if file_.type == "dir":
             download_folder(f"{folder}/{file_.name}", f"{path_to_save}/{file_.name}")
         if file_.type == "file":
-            logging.error(f"    start download file {file_.path}")
+            logging.info(f"    start download file {file_.path}")
             y.download(file_.path, f"{date}/{folder}/{file_.name}")
-    logging.error(f"Success download folder {folder}")
+    logging.info(f"Success download folder {folder}")
 
 
 def parsing_arguments():
@@ -31,7 +31,7 @@ def parsing_arguments():
     parser.add_argument(
         "--dirs",
         help="download from folder with pattern",
-        default=["Каталоги", "Каталоги 2"],
+        default=["Backup"],
         nargs="+",
     )
     parser.add_argument(
