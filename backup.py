@@ -3,6 +3,8 @@ from datetime import datetime
 import os
 import logging
 import pathlib
+import shutil
+import tarfile
 import yadisk
 
 
@@ -21,7 +23,7 @@ def download_folder(folder, path_to_save):
     logging.error(f"Success download folder {folder}")
 
 
-if __name__ == "__main__":
+def parsing_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--token", help="token yandex disk", default=os.environ.get("TOKEN")
@@ -32,7 +34,21 @@ if __name__ == "__main__":
         default=["Каталоги", "Каталоги 2"],
         nargs="+",
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "--no-archive", action="store_true", help="no archive folder after download"
+    )
+    return parser.parse_args()
+
+
+def archive_folder(path_to_archive, folder_to_archive):
+    with tarfile.open(path_to_archive, "w:bz2") as f:
+        f.add(folder_to_archive)
+    shutil.rmtree(folder_to_archive)
+    logging.info(f"archive {path_to_archive} save")
+
+
+if __name__ == "__main__":
+    args = parsing_arguments()
     if not args.token:
         logging.exception("Token not set")
         raise ValueError("Token not set")
@@ -40,4 +56,7 @@ if __name__ == "__main__":
     date = datetime.strftime(datetime.now(), "%d.%m.%Y-%H.%M.%S")
     for folder in args.dirs:
         download_folder(folder, f"{date}/{folder}")
+    if not args.no_archive:
+        archive_folder(f"{date}.tar.bz2", date)
+    logging.info("Success")
 
