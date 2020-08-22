@@ -59,6 +59,11 @@ def parsing_arguments():
         type=int,
         help="retry connection. Defaults to 3 attempts",
     )
+    parser.add_argument(
+        "--path-to-download",
+        help="path when create folder with date and download all files",
+        default=os.path.dirname(__file__),
+    )
     return parser.parse_args()
 
 
@@ -83,16 +88,20 @@ if __name__ == "__main__":
           timeout: {args.timeout}
           retry connection: {args.retry}
           dirs: {args.dirs}
+          download to: {args.path_to_download}
         """
     )
     if not args.token:
         logging.exception("Token not set")
         raise ValueError("Token not set")
     y = yadisk.YaDisk(token=args.token)
-    date = datetime.strftime(datetime.now(), "%d.%m.%Y-%H.%M.%S")
+    date = datetime.strftime(datetime.now(), "%d.%m.%Y-%H.%M")
+    path_to_download = os.path.join(args.path_to_download, date)
     for folder in args.dirs:
-        download_folder(folder, f"{date}/{folder}", args.timeout, args.retry)
+        download_folder(
+            folder, f"{path_to_download}/{folder}", args.timeout, args.retry
+        )
     if not args.no_archive:
-        archive_folder(f"{date}.tar.bz2", date)
+        archive_folder(f"{date}.tar.bz2", path_to_download)
     logging.info("Success")
 
