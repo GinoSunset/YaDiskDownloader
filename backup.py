@@ -9,7 +9,7 @@ import yadisk
 
 
 def download_folder(folder, path_to_save, timeout, retry):
-    logging.info(f"start download folder {folder}")
+    logging.debug(f"start download folder {folder}")
     if not (y.exists(folder)):
         logging.error(f"Folder {folder} not exists in Y.disk")
         return
@@ -20,7 +20,7 @@ def download_folder(folder, path_to_save, timeout, retry):
                 f"{folder}/{file_.name}", f"{path_to_save}/{file_.name}", timeout, retry
             )
         if file_.type == "file":
-            logging.info(f"    start download file {file_.path}")
+            logging.debug(f"    start download file {file_.path}")
             y.download(
                 file_.path,
                 f"{path_to_save}/{file_.name}",
@@ -64,6 +64,13 @@ def parsing_arguments():
         help="path when create folder with date and download all files",
         default=os.path.dirname(__file__),
     )
+    parser.add_argument(
+        "--log-level",
+        help="level log (CRITICL 50, ERROR 40, WARNING 30, INFO 20, DEBUG 10, NOTSET 0)",
+        default=20,
+        type=int,
+        choices=[0, 10, 20, 30, 40, 50],
+    )
     return parser.parse_args()
 
 
@@ -78,7 +85,7 @@ if __name__ == "__main__":
     args = parsing_arguments()
     logging.basicConfig(
         filename=args.log,
-        level=logging.INFO,
+        level=args.log_level,
         format="[%(asctime)s] %(levelname).1s %(message)s",
         datefmt="%Y.%m.%d %H:%M:%S",
     )
