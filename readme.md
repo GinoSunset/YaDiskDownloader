@@ -18,6 +18,7 @@ Flags
 | `--token`| token to connect ya.disk. For create lookup ( https://yandex.ru/dev/oauth/doc/dg/tasks/get-oauth-token-docpage/) | `None`
 |`--dirs`  | folder to download (backup) | `backup`
 |`--no-archive` | flag for canceling archiving after downloading | `False`
+|`-l` `--logs`| Path to save log file. | `None`
 
 
 Example

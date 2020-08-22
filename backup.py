@@ -37,6 +37,7 @@ def parsing_arguments():
     parser.add_argument(
         "--no-archive", action="store_true", help="no archive folder after download"
     )
+    parser.add_argument("-l", "--log", action="store", default=None)
     return parser.parse_args()
 
 
@@ -49,6 +50,12 @@ def archive_folder(path_to_archive, folder_to_archive):
 
 if __name__ == "__main__":
     args = parsing_arguments()
+    logging.basicConfig(
+        filename=args.log,
+        level=logging.INFO,
+        format="[%(asctime)s] %(levelname).1s %(message)s",
+        datefmt="%Y.%m.%d %H:%M:%S",
+    )
     if not args.token:
         logging.exception("Token not set")
         raise ValueError("Token not set")
