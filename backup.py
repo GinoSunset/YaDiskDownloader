@@ -13,7 +13,7 @@ def download_folder(folder, path_to_save, timeout, retry):
     if not (y.exists(folder)):
         logging.error(f"Folder {folder} not exists in Y.disk")
         return
-    pathlib.Path(f"{date}/{folder}").mkdir(parents=True, exist_ok=True)
+    pathlib.Path(f"{path_to_save}/{folder}").mkdir(parents=True, exist_ok=True)
     for file_ in y.listdir(folder):
         if file_.type == "dir":
             download_folder(
@@ -23,7 +23,7 @@ def download_folder(folder, path_to_save, timeout, retry):
             logging.info(f"    start download file {file_.path}")
             y.download(
                 file_.path,
-                f"{date}/{folder}/{file_.name}",
+                f"{path_to_save}/{folder}/{file_.name}",
                 timeout=timeout,
                 n_retries=retry,
             )
