@@ -1,5 +1,6 @@
 Script to copy folder from Yandex.disk
 ---------
+Download files from yandex disk. Use for backup. 
 
 Requirements
 --------
@@ -30,3 +31,13 @@ Download file from folder `Catalog` and `Catalog 2`
 ```
 python backup.py --token My_secret_token --dirs Catalog Catalog2
 ```
+
+Cron example:
+-------
+for backup every month
+```bash
+BASE_DIR=/opt/backup-ya-disk/YaDiskDownloader/backup
+LANG=ru_RU.UTF-8
+
+0 0 1 *  * source /opt/backup-ya-disk/YaDiskDownloader/venv/bin/activate ; python3 /opt/backup-ya-disk/YaDiskDownloader/backup.py --token SECRET_TOKEN_FROM_YANDEX --dirs "catalog"  "catalog 2" --path-to-download {$BASE_DIR}  --timeout 101```
+
