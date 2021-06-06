@@ -1,4 +1,5 @@
 import argparse
+import glob
 from datetime import datetime
 import os
 import logging
@@ -44,6 +45,11 @@ def parsing_arguments():
     parser.add_argument(
         "--no-archive", action="store_true", help="no archive folder after download"
     )
+    parser.add_argument(
+        "--delete-old",
+        action="store_true",
+        help="remove old archive before compress new",
+    )
     parser.add_argument("-l", "--log", action="store", default=None)
     parser.add_argument(
         "--timeout",
@@ -81,6 +87,13 @@ def archive_folder(path_to_archive, folder_to_archive):
     logging.info(f"archive {path_to_archive} save")
 
 
+def delete_old_archive():
+    old_archives = glob.glob(f"{args.path_to_download}/*.tar.bz2")
+    for i in old_archives:
+        logging.info(f"Remove archive {i}")
+        os.remove(i)
+
+
 if __name__ == "__main__":
     args = parsing_arguments()
     logging.basicConfig(
@@ -96,6 +109,7 @@ if __name__ == "__main__":
           retry connection: {args.retry}
           dirs: {args.dirs}
           download to: {args.path_to_download}
+          delete old archives: {args.delete_old}
         """
     )
     if not args.token:
@@ -108,8 +122,9 @@ if __name__ == "__main__":
         download_folder(
             folder, f"{path_to_download}/{folder}", args.timeout, args.retry
         )
+    if args.delete_old:
+        delete_old_archive()
     if not args.no_archive:
         path_to_archive = os.path.join(args.path_to_download, f"{date}.tar.bz2")
         archive_folder(path_to_archive, path_to_download)
     logging.info("Success")
-

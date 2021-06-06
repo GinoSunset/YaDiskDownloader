@@ -14,7 +14,7 @@ How to run
 
 Flags
 --------
-|Param|Decription|Default|
+|Param|Description|Default|
 |-----|---------|-------|
 | `--token`| token to connect ya.disk. For create lookup ( https://yandex.ru/dev/oauth/doc/dg/tasks/get-oauth-token-docpage/) | `None`
 |`--dirs`  | folder to download (backup) | `backup`
@@ -23,6 +23,7 @@ Flags
 |`--timeout`| timeout in seconds for all. Defaults to 10 seconds.|10
 |`--retry`| retry connection. Defaults to 3 attempts |3
 |`--path-to-download`| | locate file (`__file__`)
+|`--delete-old`| delete all archives in the `path-to-download` after downloading from  y.disk and before compressing| `False`
 
 
 Example
